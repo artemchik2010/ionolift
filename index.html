@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ИОНОЛИФТ — Энергия ионосферы из космоса</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#04060d;--navy:#0a1630;--ink:#e8f0fa;--mute:#8fa3bd;--cy:#4cc9ff;--vi:#8a6bff;--ag:#c4cdd8;--line:rgba(160,200,255,.16);--glass:rgba(14,26,52,.5);
+--d:'Unbounded','Manrope',system-ui,sans-serif;--b:'Manrope',system-ui,-apple-system,sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:64px;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:300 17px/1.65 var(--b);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--cy);outline-offset:3px}
+header{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 5vw;transition:.4s;}
+header.s{padding:10px 5vw;background:rgba(4,6,13,.75);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:10px;font:500 15px var(--d);letter-spacing:.14em}
+.logo svg{width:22px;height:30px}
+nav{display:flex;gap:26px;font-size:13px;color:var(--mute)}
+nav a:hover{color:var(--ink)}
+.go{font-size:12px;letter-spacing:.12em;border:1px solid var(--line);padding:9px 16px;border-radius:99px;background:var(--glass);white-space:nowrap}
+.go:hover{border-color:var(--cy)}
+@media(max-width:860px){nav{display:none}}
+#alt{position:fixed;right:max(14px,2vw);top:50%;transform:translateY(-50%);z-index:15;font:400 11px var(--d);color:var(--mute);text-align:right;pointer-events:none}
+#alt b{display:block;font-size:20px;font-weight:300;color:var(--ink)}
+#alt i{display:block;width:1px;height:90px;margin:10px 0 0 auto;background:linear-gradient(var(--cy),transparent)}
+@media(max-width:600px){#alt{display:none}}
+section{position:relative;padding:min(18vh,150px) 6vw;max-width:1280px;margin:0 auto}
+h1,h2,h3{font-family:var(--d);font-weight:300;margin:0;line-height:1.12}
+h2{font-size:clamp(28px,5vw,58px);letter-spacing:.02em;margin-bottom:28px;max-width:16em}
+p{margin:0 0 1em;max-width:36em}
+.tag{font:400 11px var(--d);color:var(--cy);letter-spacing:.16em;margin-bottom:22px;display:block}
+.mute{color:var(--mute)}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .9s,transform .9s}
+.rv.on{opacity:1;transform:none}
+/* hero */
+#hero{height:100svh;min-height:600px;max-width:none;padding:0;overflow:hidden}
+#hc{position:absolute;inset:0;width:100%;height:100%}
+.hw{position:absolute;left:6vw;right:6vw;bottom:9vh;z-index:2;pointer-events:none}
+.hw>*{opacity:0;transform:translateY(16px);transition:1.4s}
+.hw.on>*{opacity:1;transform:none}
+.hw.on>*:nth-child(2){transition-delay:.7s}.hw.on>*:nth-child(3){transition-delay:1.2s}.hw.on>*:nth-child(4){transition-delay:1.6s}
+h1{font-size:clamp(46px,12vw,150px);font-weight:500;letter-spacing:.04em;line-height:1}
+.sl{font:400 clamp(11px,1.6vw,17px) var(--d);letter-spacing:.24em;color:var(--cy);margin:18px 0}
+.btns{display:flex;gap:12px;flex-wrap:wrap;pointer-events:auto;margin-top:26px}
+.btn{padding:14px 24px;border-radius:99px;font-size:12px;letter-spacing:.14em;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.btn.p{background:var(--cy);color:#02101c;border-color:var(--cy);font-weight:600}
+.hud{position:absolute;top:96px;left:6vw;z-index:2;font:400 10px/1.9 var(--d);color:var(--mute);letter-spacing:.14em}
+/* layers */
+.lay{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:center}
+@media(max-width:800px){.lay{grid-template-columns:1fr}}
+.stack{display:flex;flex-direction:column;border-left:1px solid var(--line)}
+.stack button{all:unset;cursor:pointer;padding:20px 24px;font:400 14px var(--d);letter-spacing:.1em;color:var(--mute);border-bottom:1px solid var(--line);position:relative;transition:.3s}
+.stack button::before{content:"";position:absolute;left:-4px;top:50%;width:7px;height:7px;border-radius:50%;background:var(--mute);transition:.3s}
+.stack button.a,.stack button:hover{color:var(--ink);background:linear-gradient(90deg,rgba(76,201,255,.1),transparent)}
+.stack button.a::before{background:var(--cy);box-shadow:0 0 14px var(--cy)}
+.panel{min-height:150px;padding:26px;border:1px solid var(--line);background:var(--glass);border-radius:14px;margin-top:20px}
+.panel h3{font-size:16px;margin-bottom:10px;color:var(--cy)}
+.panel p{margin:0;font-size:15px;color:var(--ink)}
+/* steps */
+.steps{display:grid;gap:0;border-top:1px solid var(--line)}
+.st{display:grid;grid-template-columns:70px 1fr;gap:20px;padding:30px 0;border-bottom:1px solid var(--line);transition:.4s}
+.st:hover{padding-left:14px;background:linear-gradient(90deg,rgba(138,107,255,.1),transparent)}
+.st span{font:300 28px var(--d);color:var(--vi)}
+.st h3{font-size:18px;letter-spacing:.06em;margin-bottom:8px}
+.st p{margin:0;color:var(--mute);font-size:15px}
+/* why */
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.card{padding:30px 26px;border:1px solid var(--line);border-radius:14px;background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);min-height:260px;transition:.4s}
+.card:hover{border-color:var(--cy);transform:translateY(-4px)}
+.card h3{font-size:15px;letter-spacing:.06em;line-height:1.35;margin-bottom:16px}
+.card p{font-size:15px;color:var(--mute);margin:0}
+/* arch */
+.arch{display:grid;grid-template-columns:minmax(0,420px) 1fr;gap:5vw;align-items:center}
+@media(max-width:800px){.arch{grid-template-columns:1fr}}
+svg text{font-family:var(--d);fill:var(--ink)}
+.dash{stroke-dasharray:4 8;animation:fl 1.6s linear infinite}
+@keyframes fl{to{stroke-dashoffset:-24}}
+/* objects */
+.objs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.obj{border:1px solid var(--line);border-radius:14px;background:var(--glass);padding:22px;overflow:hidden}
+.obj svg{width:100%;height:auto;display:block;margin-bottom:14px}
+.obj h3{font-size:15px;letter-spacing:.1em;margin-bottom:8px}
+.obj p{font-size:14px;color:var(--mute);margin:0}
+/* globe */
+#fin{max-width:none;padding-left:0;padding-right:0;text-align:center;overflow:hidden}
+#fin .t{padding:0 6vw}
+#fin h2{margin-inline:auto}
+#fin p{margin-inline:auto}
+#gw{position:relative;width:100%;height:min(86vw,640px);margin-top:20px;touch-action:pan-y;cursor:grab}
+#gc{width:100%;height:100%;display:block}
+#tip{position:absolute;pointer-events:none;max-width:240px;padding:14px 16px;text-align:left;font-size:13px;line-height:1.5;border:1px solid var(--cy);border-radius:10px;background:rgba(6,14,32,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transition:opacity .25s;z-index:3}
+#tip b{display:block;font:400 12px var(--d);color:var(--cy);margin-bottom:4px;letter-spacing:.08em}
+.path{font:300 clamp(14px,3.4vw,28px) var(--d);letter-spacing:.14em;margin:30px 0 0}
+.hint{font-size:12px;color:var(--mute);margin-top:10px}
+/* status */
+.status{max-width:760px;margin:0 auto;padding:28px;border:1px solid var(--line);border-radius:14px;background:var(--glass);font-size:14px;color:var(--mute)}
+.status b{display:block;color:var(--ink);font:400 12px var(--d);letter-spacing:.14em;margin-bottom:10px}
+footer{padding:50px 6vw 70px;text-align:center;font:400 10px var(--d);letter-spacing:.2em;color:var(--mute)}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.dash{animation:none}.hw>*{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header id="hd">
+<a class="logo" href="#hero" aria-label="Ионолифт">
+<svg viewBox="0 0 22 30" fill="none" stroke="#e8f0fa" stroke-width="1.2"><path d="M11 1V20" stroke="#4cc9ff" stroke-width="2"/><path d="M5 11a7 7 0 0 1 12 0" opacity=".5"/><path d="M1 29h20M7 29l2-9h4l2 9"/></svg>ИОНОЛИФТ</a>
+<nav><a href="#concept">Концепция</a><a href="#tech">Технология</a><a href="#arch">Архитектура</a><a href="#port">Космопорт</a><a href="#cap">Транспорт</a><a href="#fin">Будущее</a></nav>
+<a class="go" href="#concept">ИССЛЕДОВАТЬ ↓</a>
+</header>
+<main>
+<div id="alt" aria-hidden="true"><b id="km">0</b>км<i></i></div>
+
+<section id="hero" aria-label="Ионолифт">
+<canvas id="hc" role="img" aria-label="Земля из космоса, космопорт и энергетический луч, уходящий вверх"></canvas>
+<div class="hud">IONOLIFT PROJECT<br>EARTH–IONOSPHERE<br>ENGINEERING CONCEPT</div>
+<div class="hw" id="hw">
+<h1>ИОНОЛИФТ</h1>
+<div class="sl">ЭНЕРГИЯ ИОНОСФЕРЫ ИЗ КОСМОСА</div>
+<p class="mute" style="max-width:34em">Концепция нового поколения космической транспортной инфраструктуры, соединяющей Землю и космос посредством электромагнитных и плазменных технологий.</p>
+<div class="btns"><a class="btn p" href="#concept">ИССЛЕДОВАТЬ КОНЦЕПЦИЮ</a><a class="btn" href="#tech">КАК ЭТО РАБОТАЕТ</a></div>
+</div>
+</section>
+
+<section id="concept">
+<span class="tag rv">SYSTEM 01 · ЧТО ТАКОЕ ИОНОЛИФТ</span>
+<h2 class="rv">Космический лифт, который начинается с неба над нами</h2>
+<div class="lay">
+<div class="rv">
+<p>Ионолифт — концепция космического лифта нового поколения, в которой электрическая связь между Землёй и ионосферой рассматривается как основа новой системы космического транспорта.</p>
+<p class="mute">Основная идея — создать инфраструктуру, которая потенциально позволит значительно уменьшить зависимость от традиционных ракетных запусков.</p>
+<div class="panel" id="lp" aria-live="polite"><h3>Выберите уровень</h3><p>Наведите курсор или нажмите на слой, чтобы увидеть его роль в системе.</p></div>
+</div>
+<div class="stack rv" id="stack"></div>
+</div>
+</section>
+
+<section id="tech">
+<span class="tag rv">SYSTEM 02 · КАК ЭТО РАБОТАЕТ</span>
+<h2 class="rv">Подъём по энергетическому каналу</h2>
+<div class="steps">
+<div class="st rv"><span>01</span><div><h3>Космопорт</h3><p>Наземный комплекс — отправная точка системы. Из вершины его центральной башни канал направляется вверх.</p></div></div>
+<div class="st rv"><span>02</span><div><h3>Энергетический канал</h3><p>Плазменный и электромагнитный канал, направленный в сторону верхних слоёв атмосферы. Предполагается, что он служит и несущей структурой, и источником энергии.</p></div></div>
+<div class="st rv"><span>03</span><div><h3>Ионосфера</h3><p>Верхние слои атмосферы с электрическим потенциалом относительно поверхности. Земля и ионосфера рассматриваются как единая электрическая система.</p></div></div>
+<div class="st rv"><span>04</span><div><h3>Транспортная система</h3><p>Капсулы и платформы с электромагнитным ускорением и магнитной левитацией, движущиеся вдоль канала.</p></div></div>
+<div class="st rv"><span>05</span><div><h3>Космическая станция</h3><p>Орбитальная инфраструктура, куда прибывает транспорт: стыковка, грузы, жильё, исследования.</p></div></div>
+</div>
+</section>
+
+<section id="why">
+<span class="tag rv">SYSTEM 03 · ПОЧЕМУ ЭТО ВАЖНО</span>
+<h2 class="rv">Четыре направления перспективы</h2>
+<div class="why">
+<div class="card rv"><h3>НОВАЯ ТРАНСПОРТНАЯ ИНФРАСТРУКТУРА</h3><p>Концепция направлена на создание альтернативного способа доставки людей и грузов в космос.</p></div>
+<div class="card rv"><h3>МЕНЬШЕ ЗАВИСИМОСТИ ОТ РАКЕТ</h3><p>В перспективе подобная инфраструктура может снизить необходимость использовать ракету для каждого отдельного запуска.</p></div>
+<div class="card rv"><h3>ЭНЕРГИЯ</h3><p>Проект исследует возможность использования электрических процессов системы Земля–ионосфера.</p></div>
+<div class="card rv"><h3>КОСМИЧЕСКАЯ ЭКОНОМИКА</h3><p>Постоянная инфраструктура Земля–космос потенциально открывает новые возможности для строительства, исследований и транспортировки.</p></div>
+</div>
+</section>
+
+<section id="arch">
+<span class="tag rv">SYSTEM 04 · АРХИТЕКТУРА</span>
+<h2 class="rv">Архитектура Ионолифта</h2>
+<div class="arch">
+<svg viewBox="0 0 360 540" class="rv" role="img" aria-label="Схема: Земля, наземный космопорт, энергетический канал, ионосфера, орбитальная зона, космическая инфраструктура">
+<defs><linearGradient id="bm" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#8a6bff"/><stop offset="1" stop-color="#4cc9ff"/></linearGradient></defs>
+<line x1="100" y1="470" x2="100" y2="40" stroke="url(#bm)" stroke-width="3" opacity=".9"/>
+<line x1="100" y1="470" x2="100" y2="40" stroke="#fff" stroke-width="1" class="dash"/>
+<g stroke="#a0c8ff" stroke-opacity=".35" fill="none"><ellipse cx="100" cy="240" rx="80" ry="12"/><ellipse cx="100" cy="90" rx="60" ry="9"/><path d="M0 500h360" /></g>
+<g fill="#4cc9ff"><circle cx="100" cy="470" r="5"/><circle cx="100" cy="380" r="4"/><circle cx="100" cy="240" r="4"/><circle cx="100" cy="160" r="4"/><circle cx="100" cy="60" r="6"/></g>
+<g font-size="11" letter-spacing="1.5" fill="#e8f0fa"><text x="150" y="504">ЗЕМЛЯ</text><text x="150" y="474">НАЗЕМНЫЙ КОСМОПОРТ</text><text x="150" y="384">ЭНЕРГЕТИЧЕСКИЙ КАНАЛ</text><text x="190" y="244">ИОНОСФЕРА</text><text x="150" y="164">ОРБИТАЛЬНАЯ ЗОНА</text><text x="150" y="64">КОСМИЧЕСКАЯ ИНФРАСТРУКТУРА</text></g>
+</svg>
+<div class="rv"><p>Система читается снизу вверх: энергия и транспорт идут вдоль единого канала, а каждый уровень выполняет свою функцию.</p><p class="mute">Все параметры, высоты и мощности находятся на стадии исследования и моделирования.</p></div>
+</div>
+</section>
+
+<section id="port">
+<span class="tag rv">SYSTEM 05 · ИНФРАСТРУКТУРА</span>
+<h2 class="rv" id="cap">Космопорт, капсула, станция</h2>
+<div class="objs">
+<div class="obj rv"><svg viewBox="0 0 300 220" role="img" aria-label="Космопорт с центральной башней"><defs><linearGradient id="b2" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#4cc9ff"/><stop offset="1" stop-color="#4cc9ff" stop-opacity="0"/></linearGradient></defs><rect x="146" y="0" width="8" height="70" fill="url(#b2)"/><rect x="149" y="0" width="2" height="70" fill="#fff"/><g fill="#1a2640" stroke="#c4cdd8" stroke-width="1"><path d="M143 70h14l6 110h-26z"/><rect x="137" y="62" width="26" height="10" rx="2"/><path d="M60 180l30-24h120l30 24z"/><rect x="40" y="180" width="220" height="16"/></g><circle cx="150" cy="62" r="4" fill="#4cc9ff"/><path d="M20 196h260" stroke="#a0c8ff" stroke-opacity=".4"/></svg><h3>КОСМОПОРТ</h3><p>Компактный функциональный комплекс: центральная башня и энергетическая установка на вершине, откуда начинается луч.</p></div>
+<div class="obj rv"><svg viewBox="0 0 300 220" role="img" aria-label="Ион-капсула рядом с энергетическим каналом"><rect x="236" y="0" width="6" height="220" fill="#4cc9ff" opacity=".5"/><rect x="238.500" y="0" width="1.500" height="220" fill="#fff"/><g transform="translate(40 40)"><rect width="150" height="130" rx="62" fill="#e8f0fa"/><rect x="26" y="16" width="98" height="52" rx="26" fill="#0a1630" stroke="#4cc9ff" stroke-opacity=".6"/><path d="M40 90h70" stroke="#8fa3bd" stroke-width="2"/><circle cx="75" cy="106" r="4" fill="#4cc9ff"/></g></svg><h3>ИОН-КАПСУЛА</h3><p>Транспортный модуль для перемещения людей и грузов между наземной и орбитальной инфраструктурой.</p></div>
+<div class="obj rv"><svg viewBox="0 0 300 220" role="img" aria-label="Орбитальная станция с модулями и солнечными панелями"><g fill="#1a2640" stroke="#c4cdd8"><rect x="40" y="104" width="220" height="10"/><rect x="118" y="80" width="64" height="58" rx="10"/><rect x="60" y="96" width="30" height="26" rx="5"/><rect x="210" y="96" width="30" height="26" rx="5"/></g><g fill="#4cc9ff" fill-opacity=".25" stroke="#4cc9ff"><rect x="20" y="30" width="60" height="36"/><rect x="220" y="30" width="60" height="36"/><rect x="20" y="152" width="60" height="36"/><rect x="220" y="152" width="60" height="36"/></g><circle cx="150" cy="109" r="5" fill="#4cc9ff"/></svg><h3>ОРБИТАЛЬНАЯ СТАНЦИЯ</h3><p>Стыковочные площадки, жилые и грузовые модули, исследовательский отсек, солнечные панели.</p></div>
+</div>
+</section>
+
+<section id="fin">
+<div class="t">
+<span class="tag rv">SYSTEM 06 · БУДУЩЕЕ</span>
+<h2 class="rv">КОСМОС МОЖЕТ СТАТЬ БЛИЖЕ</h2>
+<p class="rv">Сегодня космос начинается там, где заканчиваются возможности традиционного транспорта. Ионолифт рассматривает другую перспективу — создать постоянную инфраструктуру, соединяющую Землю и космос.</p>
+</div>
+<div id="gw"><canvas id="gc" role="img" aria-label="Вращающаяся модель Земли с космопортом, лучом, ионосферой и станцией"></canvas><div id="tip"></div></div>
+<div class="hint">Вращайте модель · наведите на элементы</div>
+<div class="path">ЗЕМЛЯ → ИОНОСФЕРА → КОСМОС</div>
+</section>
+
+<section style="padding-top:0">
+<div class="status"><b>СТАТУС ПРОЕКТА</b>Ионолифт является концептуальной инженерной разработкой. Описанные технологии находятся на стадии исследования и моделирования и не являются существующей готовой транспортной системой.</div>
+</section>
+
+</main>
+<footer>IONOLIFT PROJECT · ENGINEERING CONCEPT · EARTH–IONOSPHERE</footer>
+
+<script>
+(function(){
+var RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+var hd=document.getElementById('hd'),km=document.getElementById('km');
+function sc(){var y=scrollY,m=document.documentElement.scrollHeight-innerHeight;hd.classList.toggle('s',y>40);km.textContent=Math.round(y/m*400)}
+addEventListener('scroll',sc,{passive:true});sc();
+var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('on');io.unobserve(x.target)}})},{threshold:.15});
+document.querySelectorAll('.rv').forEach(function(n){io.observe(n)});
+/* layers */
+var L=[['ЗЕМЛЯ','Поверхность и опорная точка системы: здесь расположен космопорт и наземная энергетическая инфраструктура.'],['КОСМОПОРТ','Компактный наземный комплекс с центральной башней. Предполагается, что из её вершины формируется энергетический канал.'],['АТМОСФЕРА','Нижние плотные слои, которые канал проходит в самом начале пути. Здесь требуется наиболее сложное моделирование.'],['ИОНОСФЕРА','Верхние слои атмосферы с электрическим потенциалом относительно Земли. Рассматриваются как часть электрической системы проекта.'],['КОСМОС','Орбитальная зона и станция, куда потенциально прибывает транспорт.']];
+var st=document.getElementById('stack'),lp=document.getElementById('lp');
+for(var i=L.length-1;i>=0;i--){(function(d){var b=document.createElement('button');b.textContent=d[0];b.type='button';function s(){st.querySelectorAll('button').forEach(function(x){x.classList.remove('a')});b.classList.add('a');lp.innerHTML='<h3>'+d[0]+'</h3><p>'+d[1]+'</p>'}b.onmouseenter=s;b.onfocus=s;b.onclick=s;st.appendChild(b)})(L[i])}
+/* hero */
+var hc=document.getElementById('hc'),h=hc.getContext('2d'),W,H,dp,stars=[],lights=[],parts=[];
+function rs(){dp=Math.min(devicePixelRatio||1,2);W=hc.clientWidth;H=hc.clientHeight;hc.width=W*dp;hc.height=H*dp;h.setTransform(dp,0,0,dp,0,0);
+stars=[];for(var i=0;i<(W<600?90:200);i++)stars.push([Math.random()*W,Math.random()*H*.8,Math.random()*1.2+.2,Math.random()*6]);
+lights=[];for(i=0;i<260;i++){lights.push([Math.random(),Math.random()])}}
+rs();addEventListener('resize',rs);
+var t0=performance.now(),hw=document.getElementById('hw'),shown=false,vis=true;
+new IntersectionObserver(function(e){vis=e[0].isIntersecting}).observe(hc);
+function cl(x){return Math.max(0,Math.min(1,x))}
+function frame(now){requestAnimationFrame(frame);if(!vis)return;
+var t=RM?9:(now-t0)/1000;
+var sa=cl(t/1.5),ea=cl((t-1)/2),pa=cl((t-2.6)/1),ba=cl((t-3.4)/3);
+if(t>5.2&&!shown){shown=true;hw.classList.add('on')}
+h.clearRect(0,0,W,H);
+var g=h.createLinearGradient(0,0,0,H);g.addColorStop(0,'#02030a');g.addColorStop(.7,'#06102a');g.addColorStop(1,'#0a1a3a');h.fillStyle=g;h.fillRect(0,0,W,H);
+stars.forEach(function(s){h.globalAlpha=sa*(.4+.6*Math.abs(Math.sin(t*.8+s[3])));h.fillStyle='#dfeaff';h.fillRect(s[0],s[1],s[2],s[2])});h.globalAlpha=1;
+var cx=W*(W<700?.5:.62),R=Math.max(W,H)*1.5,apex=H*(.78-.1*ea+.1),cy=apex+R;
+if(ea>0){h.save();h.globalAlpha=ea;
+var ag=h.createRadialGradient(cx,cy,R*.985,cx,cy,R*1.03);ag.addColorStop(0,'rgba(76,201,255,.55)');ag.addColorStop(1,'rgba(76,201,255,0)');h.fillStyle=ag;h.beginPath();h.arc(cx,cy,R*1.03,0,7);h.fill();
+var eg=h.createRadialGradient(cx,cy-R*.6,R*.3,cx,cy,R);eg.addColorStop(0,'#0b1d3f');eg.addColorStop(1,'#020611');h.fillStyle=eg;h.beginPath();h.arc(cx,cy,R,0,7);h.fill();
+h.save();h.beginPath();h.arc(cx,cy,R,0,7);h.clip();h.fillStyle='#ffd9a0';
+lights.forEach(function(l){var x=cx+(l[0]-.5)*W*1.6,y=apex+8+Math.pow(l[1],2)*(H-apex);var dx=(x-cx)/R;if(y<cy-R*Math.sqrt(Math.max(0,1-dx*dx))+3)return;h.globalAlpha=ea*(.15+.5*l[1]);h.fillRect(x,y,1.4,1.4)});
+h.restore();h.restore()}
+var tx=cx,ty=apex-2,top=ty-34;
+if(pa>0){h.save();h.globalAlpha=pa;h.strokeStyle='#c4cdd8';h.fillStyle='#16233f';h.lineWidth=1;
+h.beginPath();h.moveTo(tx-3,ty);h.lineTo(tx-1.5,top);h.lineTo(tx+1.5,top);h.lineTo(tx+3,ty);h.closePath();h.fill();h.stroke();
+h.fillRect(tx-12,ty-4,24,5);h.strokeRect(tx-12,ty-4,24,5);h.beginPath();h.arc(tx,top,3,0,7);h.fillStyle='#8be1ff';h.fill();h.restore()}
+if(ba>0){var bt=top-ba*top,bw=W<600?7:10;
+h.save();h.globalCompositeOperation='lighter';
+var bg=h.createLinearGradient(0,top,0,bt);bg.addColorStop(0,'rgba(138,107,255,.9)');bg.addColorStop(.5,'rgba(76,201,255,.5)');bg.addColorStop(1,'rgba(76,201,255,0)');
+h.fillStyle=bg;h.fillRect(tx-bw*3,bt,bw*6,top-bt);h.globalAlpha=.5;h.fillRect(tx-bw,bt,bw*2,top-bt);
+var cg=h.createLinearGradient(0,top,0,bt);cg.addColorStop(0,'#fff');cg.addColorStop(1,'rgba(255,255,255,0)');h.globalAlpha=1;h.fillStyle=cg;h.fillRect(tx-1.2,bt,2.4,top-bt);
+for(var k=0;k<7;k++){var p=((t*.18+k/7)%1),yy=top-p*(top-bt);h.strokeStyle='rgba(120,210,255,'+(.45*(1-p))+')';h.lineWidth=1;h.beginPath();h.ellipse(tx,yy,bw*(1+p*3),bw*.35*(1+p*3),0,0,7);h.stroke()}
+if(Math.random()<.6)parts.push([tx+(Math.random()-.5)*bw*3,top,Math.random()*.6+.3,0,Math.random()*.9+.5]);
+parts=parts.filter(function(q){q[1]-=q[2]*3;q[0]+=(Math.random()-.5)*.6;q[3]+=.012;return q[1]>bt&&q[3]<q[4]});
+parts.forEach(function(q){h.globalAlpha=1-q[3]/q[4];h.fillStyle='#bfeaff';h.fillRect(q[0],q[1],1.6,1.6)});
+if(Math.random()<.05){h.globalAlpha=.7;h.strokeStyle='#cfe8ff';h.beginPath();var yy2=top-Math.random()*(top-bt)*.8,xx=tx;h.moveTo(xx,yy2);for(var j=0;j<4;j++){xx+=(Math.random()-.5)*30;yy2-=12;h.lineTo(xx,yy2)}h.stroke()}
+h.restore()}}
+requestAnimationFrame(frame);
+/* globe */
+var gc=document.getElementById('gc'),g2=gc.getContext('2d'),gw=document.getElementById('gw'),tip=document.getElementById('tip'),gW,gH,gd,pts=[],rot=0,drag=false,lx=0,gvis=false,hover=null;
+new IntersectionObserver(function(e){gvis=e[0].isIntersecting}).observe(gw);
+for(var i=0;i<1400;i++){var la=Math.asin(2*(i+.5)/1400-1),lo=i*2.39996;var n=Math.sin(la*3+lo*1.7)+Math.sin(lo*2.3-la*2)+Math.cos(la*5+lo);pts.push([la,lo%(6.2832),n>.7])}
+function grs(){gd=Math.min(devicePixelRatio||1,2);gW=gw.clientWidth;gH=gw.clientHeight;gc.width=gW*gd;gc.height=gH*gd;g2.setTransform(gd,0,0,gd,0,0)}
+grs();addEventListener('resize',grs);
+var TL=.38,items=[
+{k:'port',n:'КОСМОПОРТ',d:'Наземный комплекс — точка старта системы.',r:1,la:.05,lo:0},
+{k:'beam',n:'ЭНЕРГЕТИЧЕСКИЙ КАНАЛ',d:'Предполагаемый плазменный канал, направленный вверх от вершины башни.',r:1.45,la:.05,lo:0},
+{k:'ion',n:'ИОНОСФЕРА',d:'Верхние слои атмосферы, рассматриваемые как часть электрической системы.',r:1.28,la:.05,lo:0,off:1},
+{k:'st',n:'КОСМИЧЕСКАЯ СТАНЦИЯ',d:'Орбитальная инфраструктура, куда потенциально прибывает транспорт.',r:1.95,la:.05,lo:0}];
+function pr(r,la,lo,R){var x=Math.cos(la)*Math.sin(lo+rot),y=Math.sin(la),z=Math.cos(la)*Math.cos(lo+rot);var y2=y*Math.cos(TL)-z*Math.sin(TL),z2=y*Math.sin(TL)+z*Math.cos(TL);return[gW/2+R*r*x,gH/2-R*r*y2,z2,x,y2]}
+function gf(now){requestAnimationFrame(gf);if(!gvis)return;if(!drag&&!RM)rot+=.0035;
+var R=Math.min(gW,gH)*.24,c=g2,t=now/1000;c.clearRect(0,0,gW,gH);
+var gl=c.createRadialGradient(gW/2,gH/2,R*.9,gW/2,gH/2,R*1.2);gl.addColorStop(0,'rgba(76,201,255,.3)');gl.addColorStop(1,'rgba(76,201,255,0)');c.fillStyle=gl;c.beginPath();c.arc(gW/2,gH/2,R*1.2,0,7);c.fill();
+c.fillStyle='#050c1e';c.beginPath();c.arc(gW/2,gH/2,R,0,7);c.fill();
+pts.forEach(function(p){var q=pr(1,p[0],p[1],R);if(q[2]<=0)return;c.globalAlpha=(p[2]?.9:.28)*q[2]+.05;c.fillStyle=p[2]?'#7fd6ff':'#4a6a99';c.fillRect(q[0],q[1],1.6,1.6)});c.globalAlpha=1;
+var ip=pr(1.28,0,0,R);c.strokeStyle='rgba(138,107,255,.5)';c.setLineDash([3,6]);c.beginPath();c.arc(gW/2,gH/2,R*1.28,0,7);c.stroke();c.setLineDash([]);
+c.strokeStyle='rgba(196,205,216,.25)';c.beginPath();c.arc(gW/2,gH/2,R*1.95,0,7);c.stroke();
+var a=pr(1,.05,0,R),b=pr(1.95,.05,0,R);
+var show=function(q){return q[2]>-.25||Math.hypot(q[0]-gW/2,q[1]-gH/2)>R};
+if(show(b)){c.save();c.globalCompositeOperation='lighter';var bg=c.createLinearGradient(a[0],a[1],b[0],b[1]);bg.addColorStop(0,'rgba(138,107,255,.9)');bg.addColorStop(1,'rgba(76,201,255,.6)');c.strokeStyle=bg;c.lineWidth=5;c.globalAlpha=.4;c.beginPath();c.moveTo(a[0],a[1]);c.lineTo(b[0],b[1]);c.stroke();c.lineWidth=1.5;c.globalAlpha=1;c.stroke();
+for(var k=0;k<5;k++){var f=(t*.25+k/5)%1;c.fillStyle='#fff';c.globalAlpha=1-f;c.fillRect(a[0]+(b[0]-a[0])*f-1,a[1]+(b[1]-a[1])*f-1,2.4,2.4)}c.restore()}
+if(a[2]>0){c.fillStyle='#fff';c.beginPath();c.arc(a[0],a[1],3.5,0,7);c.fill()}
+if(show(b)){c.fillStyle='#e8f0fa';c.fillRect(b[0]-9,b[1]-1.5,18,3);c.fillStyle='#4cc9ff';c.fillRect(b[0]-1.5,b[1]-6,3,12)}
+if(hover){var q=hover.k=='ion'?pr(1.28,0,Math.PI/2-rot,R):pr(hover.r,hover.la,hover.lo,R);c.strokeStyle='#4cc9ff';c.beginPath();c.arc(q[0],q[1],12,0,7);c.stroke()}}
+requestAnimationFrame(gf);
+function ptr(e){var r=gw.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,R=Math.min(gW,gH)*.24;
+if(drag){rot+=(e.clientX-lx)*.008;lx=e.clientX}
+var best=null,bd=26;
+items.forEach(function(it){var q=it.off?pr(1.28,0,Math.PI/2-rot,R):pr(it.r,it.la,it.lo,R),d=Math.hypot(q[0]-x,q[1]-y);if(d<bd&&(q[2]>-.25||Math.hypot(q[0]-gW/2,q[1]-gH/2)>R)){bd=d;best=it}});
+hover=best;if(best){tip.innerHTML='<b>'+best.n+'</b>'+best.d;tip.style.left=Math.min(Math.max(x+14,6),gW-250)+'px';tip.style.top=Math.max(y-70,6)+'px';tip.style.opacity=1}else tip.style.opacity=0}
+gw.addEventListener('pointerdown',function(e){drag=true;lx=e.clientX;gw.style.cursor='grabbing';ptr(e)});
+addEventListener('pointerup',function(){drag=false;gw.style.cursor='grab'});
+gw.addEventListener('pointermove',ptr);
+gw.addEventListener('pointerleave',function(){hover=null;tip.style.opacity=0});
+})();
+</script>
+</body>
+</html>
